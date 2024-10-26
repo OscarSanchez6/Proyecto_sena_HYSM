@@ -1,0 +1,65 @@
+Se crea la tabla descapasidades pero aun sin la relacion por medio de la foreign key.
+CREATE TABLE discapacidades
+(id_discapacidad int AUTO_INCREMENT PRIMARY KEY,
+ discapacidad varchar (40) );
+ALTER TABLE crear_usuario ADD CONSTRAINT fk_discapacidad FOREIGN KEY (discapacidad) REFERENCES discapacidades(id_discapacidad) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+
+Tabla Contactenos:
+CREATE TABLE contactenos (id_contactenos int AUTO_INCREMENT PRIMARY KEY, datos VARCHAR (100), correoElectronico VARCHAR (70), telefono VARCHAR (15), asunto VARCHAR (20), mensajes VARCHAR (1000) );
+ 
+
+ Adicion de datos tabla formulas medicas
+ ALTER TABLE formulas_medicas
+ADD COLUMN fecha_Formulacion DATE,
+ADD COLUMN fecha_Vencimiento DATE,
+ADD COLUMN Doctor INT (10),
+ADD COLUMN lugar_Entrega VARCHAR (255);
+
+FOREIGN KEY doctor en tabla formulas medicas
+ALTER TABLE formulas_medicas
+ADD CONSTRAINT fk_formulas_medicas
+FOREIGN KEY (Doctor) REFERENCES crear_usuario(id_usuario);
+
+Agregacion de la columna especialidad en la tabla crear_usuario
+ ALTER TABLE crear_usuario
+ADD COLUMN especialidad INT (10);
+
+FOREIGN KEY especialidad a especialidades
+ALTER TABLE crear_usuario
+ADD CONSTRAINT fk_especialidad
+FOREIGN KEY (especialidad) REFERENCES especialidades(Id_especialidades);
+
+Insertar dato No Aplica en la tabla tipos_sisben
+INSERT INTO `tipos_sisben`( `Sisben`, `Descripción`) VALUES ('No aplica','No me encuentro afiliado al sisben');
+
+
+ELIMINAR COLUMNAS EN LA TABLA HISTORIA MEDICA, NO ME PARECE NECESARIA, ESCRIBANME ANTES DE QUE LA EJECUTEN PARA HABLAR DE ELLO PLISSSS
+ALTER TABLE historia_medica DROP COLUMN resultados_analisis;
+ALTER TABLE historia_medica DROP COLUMN resultados_imagenes;
+
+
+ cambio el tipo de dato en la tabla citas medicas de doctor asignado por int para relacionar la tabla crear usuario el id del usuario con doctor asignado
+ALTER TABLE citas_medicas
+ADD CONSTRAINT fk_doctor
+FOREIGN KEY (doctor_asignado) REFERENCES crear_usuario(id_usuario);
+
+Tabla Incapacidades
+CREATE TABLE Incapacidades (
+	id_Incapacidad INT AUTO_INCREMENT PRIMARY KEY, 
+    id_usuario INT,
+    motivos VARCHAR (2000),
+    fecha_inicio DATE,
+    fecha_fin DATE,
+    doctor_encargado INT,
+    recomendaciones_medicamentos VARCHAR (2000),
+    FOREIGN KEY (id_usuario) REFERENCES crear_usuario (id_usuario),
+    FOREIGN KEY (doctor_encargado) REFERENCES crear_usuario (id_usuario)
+    );
+
+Nueva columna de doctor encargado en la tabla examenes
+ALTER TABLE examenes
+ADD COLUMN doctor_encargado INT,
+ADD CONSTRAINT fk_doctor
+FOREIGN KEY (doctor_encargado) REFERENCES crear_usuario(id_usuario);
